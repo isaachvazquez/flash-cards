@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Flash Cards</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="flash-card active">
+    <span class="word">Test</span>
+  </div>
+  
+  <div class="flash-card flash-card--answer">
+    <span class="translation">Testo</span>
+    <div>(<span class="other-translations"></span>)</div>
+    <p class="example"></p>
+  </div>
+  
+  <div class="controls">
+    <button id="flip">Flip</button>
+    <button id="next">Next</button>
+  </div>
+
+  <script src="flash-card.js"></script>
+</body>
+</html>
