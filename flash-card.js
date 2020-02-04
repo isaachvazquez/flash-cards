@@ -30,12 +30,14 @@
     const wordPlaceholder = document.querySelector('.flash-card:not(.flash-card--answer) .word');
     const translationPlaceholder = document.querySelector('.flash-card--answer .translation');
     const translationsPlaceholder = document.querySelector('.flash-card--answer .other-translations');
+    const hasMultipleTranslations = word.translations.length > 1 ? 'add' : 'remove';
 
     wordPlaceholder.innerText = word.spanish;
     translationPlaceholder.innerText = word.english;
     translationsPlaceholder.innerText = word.translations.join(', ');
 
     flashCard.classList.add('active');
+    wordPlaceholder.classList[hasMultipleTranslations]('multiple-translations');
   }
 
 

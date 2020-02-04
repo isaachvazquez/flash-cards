@@ -33,7 +33,15 @@ body {
 }
 
 .word {
+  position: relative;
   font-size: 30px;
+}
+
+.word.multiple-translations::before {
+  content: '*';
+  position: absolute;
+  top: -5px;
+  right: -10px;
 }
 
 button {
