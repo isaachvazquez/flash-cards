@@ -841,20 +841,20 @@
       "count": 2
     },
     {
-      "spanish": "Spanish",
-      "english": "in English",
-      "number": "Number",
+      "spanish": "estaba diciendo",
+      "english": "you were saying...",
+      "number": "199",
       "translations": [
-        "in English"
+        "you were saying..."
       ],
       "count": 1
     },
     {
-      "spanish": "I",
-      "english": "I",
+      "spanish": "que tenga un buen dia",
+      "english": "have a good day",
       "number": "2",
       "translations": [
-        "I"
+        "have a good day"
       ],
       "count": 1
     },
@@ -1579,11 +1579,11 @@
       "count": 1
     },
     {
-      "spanish": "show",
-      "english": "show",
+      "spanish": "en lugar de",
+      "english": "instead of",
       "number": "119",
       "translations": [
-        "show"
+        "instead of"
       ],
       "count": 1
     },
