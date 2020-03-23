@@ -9,21 +9,49 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="flash-card active">
-    <span class="word">-</span>
-  </div>
-  
-  <div class="flash-card flash-card--answer">
-    <span class="translation">-</span>
-    <div>(<span class="other-translations"></span>)</div>
-    <p class="example"></p>
-  </div>
-  
-  <div class="controls">
-    <button id="flip">Flip</button>
-    <button id="next">Next</button>
-  </div>
+  <main class="flash-cards">
 
-  <script src="flash-card.js"></script>
+    <section>
+      <div class="flash-card" :class="{active: wordActive}">
+        <span class="word">{{currentWord.native}}</span>
+      </div>
+      
+      <div class="flash-card flash-card--answer" :class="{active: !wordActive}">
+        <span class="translation">{{currentWord.english}}</span>
+        <div>(<span class="other-translations" v-for="translation in currentWord.translations">{{translation}}</span>)</div>
+        <p class="example" v-for="example in currentWord.examples">{{example}}</p>
+      </div>
+      
+      <div class="controls">
+        <button @click="flip()">Flip</button>
+        <button @click="next()">Next</button>
+      </div>
+    </section>
+    
+    <section class="words-list" style="height: 400px; overflow: scroll;">
+      <ul>
+        <li v-for="word in words">
+          <span>{{word.native}} - {{word.english}}</span>
+          <button @click="editWord(word, currentLanguage)">Edit</button>
+          <button @click="removeWord(word, currentLanguage)">Remove</button>
+        </li>
+      </ul>
+    </section>
+    <section class="new-word">
+      <form action="">
+        <input type="text">
+        <input type="text">
+        <button>Add Word</button>
+      </form>
+      
+    </section>
+  </main>
+    
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <script src="flash-card.js"></script>
 </body>
 </html>
