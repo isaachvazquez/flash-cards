@@ -45,6 +45,14 @@ body {
   right: -10px;
 }
 
+.flash-card-container {
+  display: none;
+}
+
+.flash-card-container.active {
+  display: block;
+}
+
 button {
   margin-top: 10px;
 }

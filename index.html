@@ -10,8 +10,20 @@
 </head>
 <body>
   <main class="flash-cards">
+    <select v-model="currentLanguage" @change="changeLanguage()">
+      <option :value="language.toLowerCase()" v-for="language in languages">{{language}}</option>
+    </select>
+    {{currentLanguage}}
+    <section class="new-word">
+      <form @submit.prevent="addWord(newWord, currentLanguage)">
+        <input type="text" placeholder="Native Word" v-model="newWord.native">
+        <input type="text" placeholder="English Translation" v-model="newWord.english">
+        <button>Add Word</button>
+      </form>
+      
+    </section>
 
-    <section>
+    <section class="flash-card-container" :class="{'active': flashCardActive}">
       <div class="flash-card" :class="{active: wordActive}">
         <span class="word">{{currentWord.native}}</span>
       </div>
@@ -29,6 +41,7 @@
     </section>
     
     <section class="words-list" style="height: 400px; overflow: scroll;">
+      <p>{{words.length}}</p>
       <ul>
         <li v-for="word in words">
           <span>{{word.native}} - {{word.english}}</span>
@@ -36,14 +49,6 @@
           <button @click="removeWord(word, currentLanguage)">Remove</button>
         </li>
       </ul>
-    </section>
-    <section class="new-word">
-      <form action="">
-        <input type="text">
-        <input type="text">
-        <button>Add Word</button>
-      </form>
-      
     </section>
   </main>
     

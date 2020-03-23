@@ -20,7 +20,9 @@
   const app = new Vue({
     el: '.flash-cards',
     data: {
-      currentLanguage: 'Spanish',
+      languages: ['Spanish', 'Tagalog', 'Russian', 'Hmong', 'Polish', 'ASL', 'Italian', 'Hindi'],
+      downloadedLanguages: [],
+      currentLanguage: 'spanish',
       words: [],
       currentWord: {
         native: '',
@@ -28,9 +30,25 @@
         translations: [],
         examples: []
       },
+      newWord: {
+        native: '',
+        english: '',
+        translations: [],
+        examples: []
+      },
+      flashCardActive: true,
       wordActive: true
     },
+    filters: {
+      languageInitialCase: function() {
+
+      }
+    },
     methods: {
+      changeLanguage: function() {
+        console.log(`Changing to ${this.currentLanguage}...`);
+        this.fetchLanguage(this.currentLanguage);
+      },
       next: function() {
         // Get new word and add to card
         const newWord = this.getRandomWord();
@@ -42,18 +60,33 @@
       },
       fetchLanguage: function(language) {
         let vocabWords = [];
-        const vue = this;
-        console.log(this.words);
 
-        const LANGUAGE = database.ref(language);
-        LANGUAGE.once('value').then(snapshot => {
-          for(item in snapshot.val()) {
-            vocabWords.push({ ...snapshot.val()[item], id: item });
-          }
-
-          this.words = vocabWords;
+        const alreadyDownloaded = this.downloadedLanguages.find(l => l.language == language);
+        if(alreadyDownloaded != undefined) {
+          console.log('Use saved language...');
+          this.words = [...alreadyDownloaded.vocabWords];
           this.next();
-        });
+          this.flashCardActive = true;
+        } else {
+          console.log('Fetch new language...');
+          const LANGUAGE = database.ref(language);
+          LANGUAGE.once('value').then(snapshot => {
+            for(item in snapshot.val()) {
+              vocabWords.push({ ...snapshot.val()[item], id: item });
+            }
+  
+            this.words = [...vocabWords];
+            if(vocabWords.length > 0) {
+              this.flashCardActive = true;
+              this.next();
+
+              // Save downloaded Language
+              this.downloadedLanguages.push({language, vocabWords});
+            } else {
+              this.flashCardActive = false;
+            }
+          });
+        }
       },
       getRandomWord: function() {
         const randomIndex = Math.floor(Math.random() * this.words.length);
@@ -66,18 +99,37 @@
         this.currentWord = word;
         this.wordActive = true;
       },
+      resetNewWord: function() {
+        this.newWord = {
+          native: '',
+          english: '',
+          translations: [],
+          examples: []
+        }
+      },
       addWord: function(word, language) {
+        if(word.native == '' || word.english == '') return;
         const LANGUAGE = database.ref(language);
-        LANGUAGE.push({
+        const newWord = {
           native: word.native,
           english: word.english,
           translations: word.translations,
           examples: word.examples
-        });
+        };
+        // LANGUAGE.push(newWord);
+        this.words.push(newWord);
+        this.downloadedLanguages.find(l => l.language == language).vocabWords.push(newWord);
+        this.resetNewWord();
       },
       removeWord: function(word, language) {
         if(confirm(`Ya sure you want to delete ${word.native}`)) {
           // remove it from firebase
+          const LANGUAGE = database.ref(language);
+          LANGUAGE.child(word.id).remove();
+
+          // remove it from local this.words
+          const removeIndex = this.words.findIndex(w => w.id == word.id);
+          this.words.splice(removeIndex, 1);
         }
       },
       editWord: function(word, language) {
