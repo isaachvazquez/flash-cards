@@ -30,7 +30,7 @@
       
       <div class="flash-card flash-card--answer" :class="{active: !wordActive}">
         <span class="translation">{{currentWord.english}}</span>
-        <div>(<span class="other-translations" v-for="translation in currentWord.translations">{{translation}}</span>)</div>
+        <div v-if="currentWord.translations">(<span class="other-translations" v-for="translation in currentWord.translations">{{translation}}</span>)</div>
         <p class="example" v-for="example in currentWord.examples">{{example}}</p>
       </div>
       
