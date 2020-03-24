@@ -79,9 +79,11 @@
             if(vocabWords.length > 0) {
               this.flashCardActive = true;
               this.next();
-
+              
               // Save downloaded Language
+              console.log('Saving Language...');
               this.downloadedLanguages.push({language, vocabWords});
+              // console.log(this.downloadedLanguages);
             } else {
               this.flashCardActive = false;
             }
@@ -108,7 +110,12 @@
         }
       },
       addWord: function(word, language) {
+        // Form is empty
         if(word.native == '' || word.english == '') return;
+
+        // Word already exists
+        if(this.words.some(w => w.native.toLowerCase() == word.native.toLowerCase())) return;
+
         const LANGUAGE = database.ref(language);
         const newWord = {
           native: word.native,
@@ -116,9 +123,10 @@
           translations: word.translations,
           examples: word.examples
         };
-        // LANGUAGE.push(newWord);
+        LANGUAGE.push(newWord);
         this.words.push(newWord);
-        this.downloadedLanguages.find(l => l.language == language).vocabWords.push(newWord);
+        const savedLanguage = this.downloadedLanguages.find(l => l.language == language);
+        if(savedLanguage) savedLanguage.vocabWords.push(newWord);
         this.resetNewWord();
       },
       removeWord: function(word, language) {
@@ -129,7 +137,9 @@
 
           // remove it from local this.words
           const removeIndex = this.words.findIndex(w => w.id == word.id);
+          const removeIndexDL = this.downloadedLanguages.findIndex(w => w.id == word.id);
           this.words.splice(removeIndex, 1);
+          this.downloadedLanguages.splice(removeIndexDL, 1);
         }
       },
       editWord: function(word, language) {
