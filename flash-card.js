@@ -121,11 +121,11 @@
         if (wordAlreadyBeenUsed) {
           // console.log({wordAlreadyBeenUsed});
           console.log('Getting a different word...');
-          this.getRandomWord();
-          return;
+          return this.getRandomWord();
+        } else {
+          this.alreadyViewedThisCycle.push(randomWord);
+          return randomWord;
         }
-        this.alreadyViewedThisCycle.push(randomWord);
-        return randomWord;
       },
       flipCard: function() {
         this.wordActive = !this.wordActive;

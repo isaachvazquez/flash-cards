@@ -24,6 +24,7 @@
     </section>
 
     <section class="flash-card-container" :class="{'active': flashCardActive}">
+      <!-- <span v-for="w in alreadyViewedThisCycle">{{w.native}}</span> -->
       <div class="flash-card mb-1" :class="{active: wordActive}">
         <span class="word">{{currentWord.native}}</span>
       </div>
