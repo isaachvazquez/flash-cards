@@ -69,6 +69,7 @@
     methods: {
       changeLanguage: function() {
         console.log(`Changing to ${this.currentLanguage}...`);
+        this.alreadyViewedThisCycle.splice(0, this.alreadyViewedThisCycle.length);
         this.fetchLanguage(this.currentLanguage);
       },
       next: function() {
