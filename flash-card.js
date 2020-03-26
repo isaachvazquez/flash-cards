@@ -164,7 +164,7 @@
         }
       },
       editWord: function(word, language) {
-        this.editingWord = {...word};
+        this.editingWord = {...{examples: [], translations: []}, ...word};
         this.openModal();
       },
       resetEditingWord: function () {
