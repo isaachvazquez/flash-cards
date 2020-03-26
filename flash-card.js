@@ -113,6 +113,7 @@
         }
       },
       getRandomWord: function() {
+        if(this.alreadyViewedThisCycle.length == this.words.length) this.alreadyViewedThisCycle.splice(0, this.alreadyViewedThisCycle.length);
         const randomIndex = Math.floor(Math.random() * this.words.length);
         const randomWord = this.words[randomIndex];
         const wordAlreadyBeenUsed = this.alreadyViewedThisCycle.some(w => w.id == randomWord.id);
