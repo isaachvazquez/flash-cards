@@ -44,6 +44,17 @@
 
       }
     },
+    computed: {
+      wordsAlphabetical: function() {
+        return this.words.sort((a, b) => {
+          const sortOrder = 1;
+          // https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
+          const aSortValue = a.native.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+          const bSortValue = b.native.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+          return (aSortValue === bSortValue ? 0 : aSortValue > bSortValue ? 1 : -1) * sortOrder;
+        });
+      }
+    },
     methods: {
       changeLanguage: function() {
         console.log(`Changing to ${this.currentLanguage}...`);

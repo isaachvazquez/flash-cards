@@ -43,7 +43,7 @@
     <section class="words-list" style="height: 400px; overflow: scroll;">
       <p>Words: {{words.length}}</p>
       <ul>
-        <li v-for="word in words">
+        <li v-for="word in wordsAlphabetical">
           <span>{{word.native}} - {{word.english}}</span>
           <button @click="editWord(word, currentLanguage)">Edit</button>
           <button @click="removeWord(word, currentLanguage)">Remove</button>
