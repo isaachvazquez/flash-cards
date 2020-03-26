@@ -43,6 +43,7 @@
         translations: [],
         examples: []
       },
+      alreadyViewedThisCycle: [],
 
       // STATE
       flashCardActive: true,
@@ -113,7 +114,16 @@
       },
       getRandomWord: function() {
         const randomIndex = Math.floor(Math.random() * this.words.length);
-        return this.words[randomIndex];
+        const randomWord = this.words[randomIndex];
+        const wordAlreadyBeenUsed = this.alreadyViewedThisCycle.some(w => w.id == randomWord.id);
+        if (wordAlreadyBeenUsed) {
+          // console.log({wordAlreadyBeenUsed});
+          console.log('Getting a different word...');
+          this.getRandomWord();
+          return;
+        }
+        this.alreadyViewedThisCycle.push(randomWord);
+        return randomWord;
       },
       flipCard: function() {
         this.wordActive = !this.wordActive;
@@ -177,6 +187,8 @@
       },
       saveChanges: function(word, language) {
         const LANGUAGE = database.ref(language);
+        const updatedWordIndex = this.words.findIndex(w => w.id == word.id);
+        this.words.splice(updatedWordIndex, 1, word);
         LANGUAGE.child(word.id).update(word);
         this.closeModal();
       },
