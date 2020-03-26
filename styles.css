@@ -27,6 +27,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   z-index: 1;
   padding: 20px;
   background-color: #fff;
@@ -50,6 +51,13 @@ body {
 
 .flash-card--answer {
   flex-direction: column;
+  color: #5027ce;
+}
+
+.flash-card button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
 .word {
@@ -185,6 +193,10 @@ ul {
   background-color: #fff;
   border: 1px solid #ddd;
   color: #333;
+}
+
+.Button--utility {
+  background-color: #68b383;
 }
 
 hr {

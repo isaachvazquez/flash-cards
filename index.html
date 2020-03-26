@@ -27,18 +27,19 @@
       <!-- <span v-for="w in alreadyViewedThisCycle">{{w.native}}</span> -->
       <div class="flash-card mb-1" :class="{active: wordActive}">
         <span class="word">{{currentWord.native}}</span>
+        <button @click="editWord(currentWord, currentLanguage)" class="Button Button--secondary">Edit</button>
       </div>
       
       <div class="flash-card flash-card--answer mb-1" :class="{active: !wordActive}">
         <span class="translation">{{currentWord.english}}</span>
         <div v-if="currentWord.translations">(<span class="other-translations" v-for="translation in currentWord.translations">{{translation}}</span>)</div>
         <p class="example" v-for="example in currentWord.examples">{{example}}</p>
+        <button @click="editWord(currentWord, currentLanguage)" class="Button Button--secondary">Edit</button>
       </div>
       
       <div class="controls">
-        <button @click="flip()" class="Button mr-1">Flip</button>
-        <button @click="next()" class="Button mr-1">Next</button>
-        <button @click="editWord(currentWord, currentLanguage)" class="Button Button--secondary">Edit</button>
+        <button @click="flip()" class="Button Button--utility mr-1">Flip</button>
+        <button @click="next()" class="Button mr-1">Next &rarr;</button>
       </div>
     </section>
     
