@@ -119,8 +119,7 @@
         const randomWord = this.words[randomIndex];
         const wordAlreadyBeenUsed = this.alreadyViewedThisCycle.some(w => w.id == randomWord.id);
         if (wordAlreadyBeenUsed) {
-          // console.log({wordAlreadyBeenUsed});
-          console.log('Getting a different word...');
+          // console.log('Getting a different word...');
           return this.getRandomWord();
         } else {
           this.alreadyViewedThisCycle.push(randomWord);
