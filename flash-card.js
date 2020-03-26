@@ -20,6 +20,7 @@
   const app = new Vue({
     el: '.flash-cards',
     data: {
+      // DATA
       languages: ['Spanish', 'Tagalog', 'Russian', 'Hmong', 'Polish', 'ASL', 'Italian', 'Hindi'],
       downloadedLanguages: [],
       currentLanguage: 'spanish',
@@ -36,8 +37,17 @@
         translations: [],
         examples: []
       },
+      editingWord: {
+        native: '',
+        english: '',
+        translations: [],
+        examples: []
+      },
+
+      // STATE
       flashCardActive: true,
-      wordActive: true
+      wordActive: true,
+      modalActive: false
     },
     filters: {
       languageInitialCase: function() {
@@ -154,8 +164,35 @@
         }
       },
       editWord: function(word, language) {
-
-      }
+        this.editingWord = {...word};
+        this.openModal();
+      },
+      resetEditingWord: function () {
+        this.editingWord = {
+          native: '',
+          english: '',
+          translations: [],
+          examples: []
+        }
+      },
+      saveChanges: function(word, language) {
+        const LANGUAGE = database.ref(language);
+        LANGUAGE.child(word.id).update(word);
+        this.closeModal();
+      },
+      addExample: function() {
+        this.editingWord.examples.push('');
+      },
+      addTranslation: function() {
+        this.editingWord.translations.push('');
+      },
+      openModal: function() {
+        this.modalActive = true;
+      },
+      closeModal: function() {
+        this.modalActive = false;
+        this.resetEditingWord()
+      },
     },
     created() {
       this.fetchLanguage('spanish');
