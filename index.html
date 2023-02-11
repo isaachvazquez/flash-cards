@@ -10,31 +10,23 @@
 </head>
 <body>
   <main class="flash-cards">
-    <section class="new-word p-1 mb-2">
+    <section class="mb-2">
       <select v-model="currentLanguage" @change="changeLanguage()" class="mb-1">
         <option :value="language.toLowerCase()" v-for="language in languages">{{language}}</option>
       </select>
-      <!-- {{currentLanguage}} -->
-
-      <form @submit.prevent="addWord(newWord, currentLanguage)">
-        <div class="flex flex--nowrap align-center justify-between">
-          <input class="mr-1" type="text" placeholder="Native Word" v-model="newWord.native">
-          <input class="" type="text" placeholder="English Translation" v-model="newWord.english">
-        </div>
-        <button class="Button Button--full">Add Word</button>
-      </form>
     </section>
 
     <section class="flash-card-container mb-2" :class="{'active': flashCardActive}">
+
       <!-- <span v-for="w in alreadyViewedThisCycle">{{w.native}}</span> -->
-      <div @click="flip()" class="flash-card mb-1" :class="{active: wordActive}">
+      <div @click="flip()" class="flash-card mb-2" :class="{active: wordActive}">
         <span class="word">{{currentWord.native}}</span>
         <button @click="editWord(currentWord, currentLanguage)" class="Button Button--secondary">
           <svg class="pencil-icon"><use href="#pencil-icon"></use></svg>
         </button>
       </div>
       
-      <div @click="flip()" class="flash-card flash-card--answer mb-1" :class="{active: !wordActive}">
+      <div @click="flip()" class="flash-card flash-card--answer mb-2" :class="{active: !wordActive}">
         <span class="translation">{{currentWord.english}}</span>
         <div v-if="currentWord.translations">(<span class="other-translations" v-for="translation in currentWord.translations">{{translation}}</span>)</div>
         <p class="example" v-for="example in currentWord.examples">{{example}}</p>
@@ -46,11 +38,29 @@
         <button @click="next()" class="Button Button--full">Next &rarr;</button>
       </div>
     </section>
+
+    <hr>
+
+    <section class="new-word mb-2">
+      <h3>Add a word</h3>
+      <!-- {{currentLanguage}} -->
+
+      <form @submit.prevent="addWord(newWord, currentLanguage)">
+        <div class="flex flex--nowrap align-center justify-between">
+          <input class="mr-1" type="text" placeholder="Native Word" v-model="newWord.native">
+          <input class="mr-1" type="text" placeholder="English Translation" v-model="newWord.english">
+          <button class="Button Button--full Button--autoHeight">Add Word</button>
+        </div>
+      </form>
+    </section>
     
-    <!-- <section class="words-list" style="height: 400px; overflow: scroll;"> -->
-    <section class="words-list" style="max-height: 25vh; overflow: scroll;">
+    <section class="mb-2">
+      <h3>Search Wordlist</h3>
+      <input class="mb-1" type="text" v-model="searchKeyword" placeholder="Search for a word">
+    </section>
+
+    <section class="words-list" style="overflow: scroll;">
       <p>Words: {{words.length}}</p>
-      <input type="text" v-model="searchKeyword" placeholder="Search for a word">
       <ul>
         <li v-for="word in wordsAlphabetical">
           <span>{{word.native}} - {{word.english}}</span>
