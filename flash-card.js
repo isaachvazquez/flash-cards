@@ -21,6 +21,7 @@
     el: '.flash-cards',
     data: {
       // DATA
+      searchKeyword: '',
       languages: ['Spanish', 'Tagalog', 'Russian', 'Hmong', 'Polish', 'ASL', 'Italian', 'Hindi'],
       downloadedLanguages: [],
       currentLanguage: 'spanish',
@@ -57,7 +58,13 @@
     },
     computed: {
       wordsAlphabetical: function() {
-        return this.words.sort((a, b) => {
+        const vue = this;
+        return this.words.filter(word => {
+          console.log({word});
+          const matchesKeyword = vue.searchKeyword == '' || word.native.toLowerCase().includes(vue.searchKeyword.toLowerCase()) || word.english.toLowerCase().includes(vue.searchKeyword.toLowerCase());
+          console.log({matchesKeyword});
+          return matchesKeyword;
+        }).sort((a, b) => {
           const sortOrder = 1;
           // https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
           const aSortValue = a.native.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -164,7 +171,9 @@
       removeWord: function(word, language) {
         if(confirm(`Ya sure you want to delete ${word.native}`)) {
           // remove it from firebase
+          console.log({language});
           const LANGUAGE = database.ref(language);
+          console.log({LANGUAGE});
           LANGUAGE.child(word.id).remove();
 
           // remove it from local this.words
