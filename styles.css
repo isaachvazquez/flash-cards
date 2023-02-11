@@ -39,7 +39,7 @@ body {
   border-radius: 5px;  
   min-width: 300px;
   height: 300px;
-  height: calc(100vh - env(safe-area-inset-bottom) - 220px);
+  height: calc(100vh - env(safe-area-inset-bottom) - 250px);
 }
 
 .flash-card:not(.flash-card--answer) {

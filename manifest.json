@@ -1,0 +1,16 @@
+{
+  "name": "Flashcards",
+  "short_name": "Flashcards",
+  "lang": "en-US",
+
+  "display": "standalone",
+  "orientation":  "portrait",
+  "start_url": "/",
+  "scope": "/",
+
+  "background_color": "#ffffff",
+  "theme_color": "#6A30FA",
+
+  "description": "Language Learning",
+  "categories": ["languages", "learning"]
+}
