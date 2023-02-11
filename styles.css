@@ -39,7 +39,7 @@ body {
   border-radius: 5px;  
   min-width: 300px;
   height: 300px;
-  height: calc(100vh - env(safe-area-inset-bottom) - 200px);
+  height: calc(100vh - env(safe-area-inset-bottom) - 220px);
 }
 
 .flash-card:not(.flash-card--answer) {
@@ -204,6 +204,8 @@ ul {
 .modal-content {
   width: 100%;
   max-width: 400px;
+  max-height: 100%;
+  overflow-y: scroll;
   padding: 30px;
   background-color: #ffffff;
   /* height: 100 */
