@@ -32,7 +32,6 @@
       <div @click="flip()" class="flash-card mb-2" :class="{active: wordActive}">
         <div class="flex flex--column align-center justify-center">
           <img style="width: 300px; max-width: 100%;" :src="currentWord.src ? currentWord.src : 'https://placehold.co/600x400'" alt="">
-          {{currentWord.src}}
           <span class="word">{{currentWord.native}}</span>
         </div>
         <button @click="editWord(currentWord, currentLanguage)" class="Button Button--secondary">
@@ -66,7 +65,7 @@
               <input class="mr-1" type="text" placeholder="Native Word" v-model="newWord.native">
               <input class="mr-1" type="text" placeholder="English Translation" v-model="newWord.english">
             </div>
-            <div class="flex flex--nowrap">
+            <div class="flex flex--nowra">
               <div class="flex flex--nowrap align-center mr-1" v-for="category in categoryOptions">
                 <input class="test" :id="`category-${category.id}`" type="checkbox" v-model="newWord.categories" :value="category.id">
                 <label style="margin-left: 4px; white-space: nowrap;" :for="`category-${category.id}`">{{category.label}}</label>
@@ -74,7 +73,7 @@
             </div>
 
           </div>
-          <button class="Button Button--full Button--autoHeight">Add Word</button>
+          <button class="Button Button--ful Button--autoHeight">Add Word</button>
         </div>
       </form>
     </section>
@@ -90,7 +89,7 @@
     </section>
 
     <section class="words-list" style="overflow: scroll;">
-      <p>Words: {{words.length}}</p>
+      <p>Words: {{wordsAlphabetical.length}}</p>
       <ul>
         <li v-for="word in wordsAlphabetical" class="flex flex--nowrap align-center justify-start">
           <img class="mr-1" style="width: 50px; max-width: 100%;" :src="word.src ? word.src : 'https://placehold.co/600x400'" alt="">
@@ -108,7 +107,6 @@
         <form @submit.prevent.stop="saveChanges(editingWord, currentLanguage)">
           <h3 class="m-0">Native: {{editingWord.native}}</h3>
           <h3 class="m-0 mb-2">English: {{editingWord.english}}</h3>
-          {{editingWord.categories}}
           <br>
           <div>
             <div class="flex align-center" v-for="category in categoryOptions">
