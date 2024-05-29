@@ -30,7 +30,11 @@
 
       <!-- <span v-for="w in alreadyViewedThisCycle">{{w.native}}</span> -->
       <div @click="flip()" class="flash-card mb-2" :class="{active: wordActive}">
-        <span class="word">{{currentWord.native}}</span>
+        <div class="flex flex--column align-center justify-center">
+          <img style="width: 300px; max-width: 100%;" :src="currentWord.src ? currentWord.src : 'https://placehold.co/600x400'" alt="">
+          {{currentWord.src}}
+          <span class="word">{{currentWord.native}}</span>
+        </div>
         <button @click="editWord(currentWord, currentLanguage)" class="Button Button--secondary">
           <svg class="pencil-icon"><use href="#pencil-icon"></use></svg>
         </button>
@@ -55,10 +59,21 @@
       <h3>Add a word</h3>
       <!-- {{currentLanguage}} -->
 
-      <form @submit.prevent="addWord(newWord, currentLanguage)">
+      <form @submit.prevent="addWord(currentLanguage)">
         <div class="flex flex--nowrap align-center justify-between">
-          <input class="mr-1" type="text" placeholder="Native Word" v-model="newWord.native">
-          <input class="mr-1" type="text" placeholder="English Translation" v-model="newWord.english">
+          <div class="mr-1" style="flex: 1;">
+            <div class="flex flex--nowrap align-center mb-1">
+              <input class="mr-1" type="text" placeholder="Native Word" v-model="newWord.native">
+              <input class="mr-1" type="text" placeholder="English Translation" v-model="newWord.english">
+            </div>
+            <div class="flex flex--nowrap">
+              <div class="flex flex--nowrap align-center mr-1" v-for="category in categoryOptions">
+                <input class="test" :id="`category-${category.id}`" type="checkbox" v-model="newWord.categories" :value="category.id">
+                <label style="margin-left: 4px; white-space: nowrap;" :for="`category-${category.id}`">{{category.label}}</label>
+              </div>
+            </div>
+
+          </div>
           <button class="Button Button--full Button--autoHeight">Add Word</button>
         </div>
       </form>
@@ -69,10 +84,16 @@
       <input class="mb-1" type="text" v-model="searchKeyword" placeholder="Search for a word">
     </section>
 
+    <section class="mb-2">
+      <button class="Button Button--secondary" :class="{active: activeCategories.length == 0}" @click="resetActiveCategories('')">All</button>
+      <button v-for="category in categoryOptions" class="Button Button--secondary" :class="{active: activeCategories.includes(category.id)}" @click="toggleActiveCategory(category.id)">{{category.label}}</button>
+    </section>
+
     <section class="words-list" style="overflow: scroll;">
       <p>Words: {{words.length}}</p>
       <ul>
-        <li v-for="word in wordsAlphabetical">
+        <li v-for="word in wordsAlphabetical" class="flex flex--nowrap align-center justify-start">
+          <img class="mr-1" style="width: 50px; max-width: 100%;" :src="word.src ? word.src : 'https://placehold.co/600x400'" alt="">
           <span>{{word.native}} - {{word.english}}</span>
           <button @click="editWord(word, currentLanguage)">Edit</button>
           <button @click="removeWord(word, currentLanguage)">Remove</button>
@@ -82,9 +103,20 @@
 
     <div class="modal" @click="closeModal()" :class="{active: modalActive}">
       <div class="modal-content" :class="{active: modalActive}" @click.stop>
+        <img style="width: 300px; max-width: 100%;" :src="editingWord.src ? editingWord.src : 'https://placehold.co/600x400'" alt="">
+        <input type="text" v-model="editingWord.src">
         <form @submit.prevent.stop="saveChanges(editingWord, currentLanguage)">
           <h3 class="m-0">Native: {{editingWord.native}}</h3>
           <h3 class="m-0 mb-2">English: {{editingWord.english}}</h3>
+          {{editingWord.categories}}
+          <br>
+          <div>
+            <div class="flex align-center" v-for="category in categoryOptions">
+              <input class="test" :id="category.id" type="checkbox" v-model="editingWord.categories" :value="category.id">
+              <label style="margin-left: 4px;" :for="category.id">{{category.label}}</label>
+            </div>
+            
+          </div>
           <input class="mb-2" type="text" placeholder="Native Word" v-model="editingWord.native">
           <input type="text" placeholder="English Translation" v-model="editingWord.english">
 

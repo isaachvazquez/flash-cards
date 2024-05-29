@@ -25,6 +25,29 @@
       languages: ['Spanish', 'Tagalog', 'Russian', 'Hmong', 'Polish', 'ASL', 'Italian', 'Hindi'],
       downloadedLanguages: [],
       currentLanguage: 'spanish',
+      categoryOptions: [
+        {
+          id: 'nouns', 
+          label: 'Nouns'
+        },
+        {
+          id: 'verbs', 
+          label: 'Verbs'
+        },
+        {
+          id: 'adjectives', 
+          label: 'Adjectives'
+        },
+        {
+          id: 'glue-words', 
+          label: 'Glue Words'
+        },
+        {
+          id: 'phrases', 
+          label: 'Phrases'
+        },
+      ],
+      activeCategories: [],
       words: [],
       currentWord: {
         native: '',
@@ -36,13 +59,17 @@
         native: '',
         english: '',
         translations: [],
-        examples: []
+        examples: [],
+        categories: [],
+        src: ''
       },
       editingWord: {
         native: '',
         english: '',
         translations: [],
-        examples: []
+        examples: [],
+        categories: [],
+        src: ''
       },
       alreadyViewedThisCycle: [],
 
@@ -60,6 +87,14 @@
       wordsAlphabetical: function() {
         const vue = this;
         return this.words.filter(word => {
+          // 
+
+          // if(vue.activeCategories.length == 0) return true;
+          if(vue.activeCategories.length == 0) return !word.categories;
+          if(!word.categories) return false;
+
+          return word.categories.some(category => vue.activeCategories.includes(category));
+        }).filter(word => {
           console.log({word});
           const matchesKeyword = vue.searchKeyword == '' || word.native.toLowerCase().includes(vue.searchKeyword.toLowerCase()) || word.english.toLowerCase().includes(vue.searchKeyword.toLowerCase());
           console.log({matchesKeyword});
@@ -74,6 +109,20 @@
       }
     },
     methods: {
+      toggleActiveCategory: function(category) {
+        if(this.activeCategories.includes(category)) {
+          const categoryIndex = this.activeCategories.findIndex(c => c == category);
+          this.activeCategories.splice(categoryIndex, 1);
+          this.newWord.categories.splice(categoryIndex, 1);
+        } else {
+          this.activeCategories.push(category);
+          this.newWord.categories.push(category);
+        }
+      },
+      resetActiveCategories: function() {
+        this.activeCategories = [];
+        this.newWord.categories = [];
+      },
       changeLanguage: function() {
         console.log(`Changing to ${this.currentLanguage}...`);
         this.alreadyViewedThisCycle.splice(0, this.alreadyViewedThisCycle.length);
@@ -145,22 +194,26 @@
           native: '',
           english: '',
           translations: [],
-          examples: []
+          examples: [],
+          categories: [...this.activeCategories],
+          src: '',
         }
       },
-      addWord: function(word, language) {
+      addWord: function(language) {
+        const vue = this;
         // Form is empty
-        if(word.native == '' || word.english == '') return;
+        if(vue.newWord.native == '' || vue.newWord.english == '') return;
 
         // Word already exists
-        if(this.words.some(w => w.native.toLowerCase() == word.native.toLowerCase())) return;
+        if(this.words.some(w => w.native.toLowerCase() == vue.newWord.native.toLowerCase())) return;
 
         const LANGUAGE = database.ref(language);
         const newWord = {
-          native: word.native,
-          english: word.english,
-          translations: word.translations,
-          examples: word.examples
+          // native: vue.newWord.native,
+          // english: vue.newWord.english,
+          // translations: vue.newWord.translations,
+          // examples: vue.newWord.examples
+          ...vue.newWord
         };
         LANGUAGE.push(newWord);
         this.words.push(newWord);
@@ -184,6 +237,7 @@
         }
       },
       editWord: function(word, language) {
+        if(!word.categories) word['categories'] = [];
         this.editingWord = {...{examples: [], translations: []}, ...word};
         this.openModal();
       },
@@ -192,7 +246,9 @@
           native: '',
           english: '',
           translations: [],
-          examples: []
+          examples: [],
+          categories: [],
+          src: ''
         }
       },
       saveChanges: function(word, language) {
